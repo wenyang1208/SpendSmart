@@ -23,6 +23,8 @@ namespace SpendSmart.Controllers
         public IActionResult Expense()
         {
             var allExpenses = _context.Expenseses.ToList();
+            var totalAmt = allExpenses.Sum(x => x.Value);
+            ViewBag.Expenseses = totalAmt; // viewbag allows the data transfer from the controller to the view
             return View(allExpenses);
         }
 
