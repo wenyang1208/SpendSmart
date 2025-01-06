@@ -1,7 +1,15 @@
+using Microsoft.EntityFrameworkCore;
+using SpendSmart.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// use the constructor "SpendSmartDbContext" to configure in-memory address
+builder.Services.AddDbContext<SpendSmartDbContext>(options =>
+    options.UseInMemoryDatabase("SpendSmartDb")
+);
 
 var app = builder.Build();
 
