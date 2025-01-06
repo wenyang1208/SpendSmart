@@ -18,6 +18,11 @@ namespace SpendSmart.Controllers
             return View();
         }
 
+        public IActionResult Expense()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
