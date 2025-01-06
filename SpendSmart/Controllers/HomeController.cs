@@ -7,7 +7,7 @@ namespace SpendSmart.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly SpendSmartDbContext _context; // the db context will be injected through constructor
+        private readonly SpendSmartDbContext _context; // the db context will be injecsted through constructor
 
         public HomeController(ILogger<HomeController> logger, SpendSmartDbContext context)
         {
@@ -26,17 +26,36 @@ namespace SpendSmart.Controllers
             return View(allExpenses);
         }
 
-        public IActionResult CreateEditExpense()
+        public IActionResult CreateEditExpense(int? id)
         {
+            if (id != null) {
+                var expenseInDb = _context.Expenseses.SingleOrDefault(expense => expense.Id == id);
+                return View(expenseInDb);
+            }
             return View();
+        }
+
+        public IActionResult DeleteExpense(int id)
+        {
+            var expenseInDb = _context.Expenseses.SingleOrDefault(expense => expense.Id == id);
+            _context.Expenseses.Remove(expenseInDb);
+            _context.SaveChanges();
+            return RedirectToAction("Expense");
         }
 
         public IActionResult CreateEditExpenseForm(Expense model)
         {
-            _context.Expenseses.Add(model);
+            if (model.Id == 0)
+            {
+                // create
+                _context.Expenseses.Add(model);
+            }
+            else {
+                //edit
+                _context.Expenseses.Update(model);
+            }
             _context.SaveChanges();
             return RedirectToAction("Expense");
-
         }
 
         public IActionResult Privacy()
